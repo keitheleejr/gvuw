@@ -8,35 +8,7 @@ library(gtExtras)
 
 data <- read_survey("qualtrics-data.csv")
 
-
-table <- function(var){
-    var_df <- as.data.frame(table(data$var)) %>%
-        mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
-        arrange(desc(Percentage))
-}
-
-table <- function(var){
-    var <- as.data.frame(table(data$var)) %>%
-        mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
-        arrange(desc(Percentage))
-
-    var_table <- var %>%
-        gt() %>%
-        cols_label(
-            Var1 = "Response",
-            Freq = "Count") %>%
-        cols_align(
-            align = "left",
-            columns = Var1
-        ) # add additional cols_align if need to align additional columns
-        
-    var_table
-}
-
-axw <- function(var){
-    y <- var + 1
-    print(y)
-}
+View(data)
 
 housing <- as.data.frame(table(data$housing)) %>% # create data frame
     mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
@@ -53,3 +25,53 @@ housing_table <- housing %>%
         ) # add additional cols_align if need to align additional columns
 
 housing_table
+
+
+household_income <- as.data.frame(table(data$household_income)) %>%
+    mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
+    arrange(desc(Percentage))
+
+household_income_table <- household_income %>%
+    gt() %>%
+    cols_label(
+        Var1 = "Response",
+        Freq = "Count") %>%
+    cols_align(
+        align = "left",
+        columns = Var1
+        ) # add additional cols_align if need to align additional columns
+
+household_income_table
+
+
+# Variables
+# age
+# zip_code
+# county
+# household_income
+# single_parent
+# occupation
+# housing
+# food
+# housing_stress
+# energy_stress
+# food_stress
+# trans_stress
+# internet_access
+# internet_devices
+# child_care
+# child_care_needs
+# child_care_stress
+# clothing_stress
+# services
+# organizations
+# resources_non_access
+# why_non_access
+# happy
+# sad
+# stressed
+# angry
+# frustrated
+# tired
+# hopeful
+# worried

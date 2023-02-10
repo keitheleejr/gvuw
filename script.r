@@ -44,6 +44,10 @@ household_income_table <- household_income %>%
 household_income_table
 
 
+str(data$zip_code)
+data$zip_code_factor <- as.factor(data$zip_code)
+levels(data$zip_code_factor)
+
 # Variables
 # age
 # zip_code

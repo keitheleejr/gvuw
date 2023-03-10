@@ -12,6 +12,7 @@ serv_need <- data |>
   select(resources_non_access) |> 
   arrange(resources_non_access)
 
+<<<<<<< HEAD
 table <- as_tibble(unlist(strsplit(serv_need$resources_non_access,",")))
 
 table |> 
@@ -35,6 +36,28 @@ table |>
 # Happy
 
 happy <- as.data.frame(table(data$happy)) %>% # create data frame
+=======
+
+
+data |> 
+  group_by(county) |> 
+  count() |>
+  ggplot(aes(x = reorder(county,n), y = n, fill = county)) +
+  geom_col() +
+  coord_flip() +
+  labs(y = "# of Responses",
+       x = "County",
+       title = "Number of Responses by County",
+       caption = "Updated February 27, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.05)) +
+  theme_classic() +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = 0.5)) 
+  ggsave("response-by-county.png")
+
+housing <- as.data.frame(table(data$housing)) %>% # create data frame
+>>>>>>> e3eca85f13538c3485f40a195160cb0e307cd894
     mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
     arrange(desc(Percentage))
 

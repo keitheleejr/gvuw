@@ -1,4 +1,15 @@
-setwd("/Users/keithlee/Documents/gvuw")
+---
+title: "Data Request"
+author: "Keith Lee & Joseph Robbins"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+
+# Since January of 2020 which, if any, support resources did you need but could not access?
+
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+
 
 library(qualtRics)
 library(Hmisc)
@@ -6,7 +17,10 @@ library(tidyverse)
 library(gt)
 library(gtExtras)
 
+
 data <- read_survey("qualtrics-data.csv")
+
+today.date <- Sys.Date()
 
 serv_need <- data |> 
   select(resources_non_access) |> 
@@ -24,16 +38,152 @@ table |>
   geom_col() + 
   coord_flip() + 
   labs(x = "Resources Needed",
-       y = "Number of Respondents",
-       caption = "Updated March 6, 2023") +
+       y = "Number of Respondents") +
   geom_text(aes(label = n,
                 hjust = 1.25)) + 
   theme_classic() + 
   theme(legend.position = "none")
+  
+```
+
+\newpage
 
 
-# Happy
+# For each of the following topics, select the option that best describes how stressful each are for you currently.
 
+
+```{r warning = FALSE, message=FALSE, echo=FALSE}
+
+housing_stress <- as.data.frame(table(data$housing_stress)) %>% # create data frame
+    mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
+    arrange(desc(Percentage))
+
+
+housing_table <- housing_stress |> 
+  mutate(Ordered = fct_relevel(Var1, 
+                               c('Very stressful', 
+                                 'Somewhat stressful',
+                                 'Not stressful',
+                                 'Not applicable, do not have to pay for this'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") %>%
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header(
+    title = "Housing Costs"
+  )
+
+housing_table
+
+```
+
+
+```{r warning = FALSE, message=FALSE, echo=FALSE}
+
+energy_stress <- as.data.frame(table(data$energy_stress)) %>% # create data frame
+    mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
+    arrange(desc(Percentage))
+
+
+energy_table <- energy_stress |> 
+  mutate(Ordered = fct_relevel(Var1, 
+                               c('Very stressful', 
+                                 'Somewhat stressful',
+                                 'Not stressful',
+                                 'Not applicable, do not have to pay for this'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") %>%
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header(
+    title = "Home Energy Costs"
+  )
+
+energy_table
+
+```
+
+
+
+```{r warning = FALSE, message=FALSE, echo=FALSE}
+
+food_stress <- as.data.frame(table(data$food_stress)) %>% # create data frame
+    mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
+    arrange(desc(Percentage))
+
+
+food_table <- food_stress |> 
+  mutate(Ordered = fct_relevel(Var1, 
+                               c('Very stressful', 
+                                 'Somewhat stressful',
+                                 'Not stressful',
+                                 'Not applicable, do not have to pay for this'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") %>%
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header(
+    title = "Food Costs"
+  )
+
+food_table
+
+```
+
+
+```{r warning = FALSE, message=FALSE, echo=FALSE}
+
+trans_stress <- as.data.frame(table(data$trans_stress)) %>% # create data frame
+    mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
+    arrange(desc(Percentage))
+
+
+trans_table <- trans_stress |> 
+  mutate(Ordered = fct_relevel(Var1, 
+                               c('Very stressful', 
+                                 'Somewhat stressful',
+                                 'Not stressful',
+                                 'Not applicable, do not have to pay for this'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") %>%
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header(
+    title = "Access to Reliable Transportation"
+  )
+
+trans_table
+
+```
+
+
+
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
 happy <- as.data.frame(table(data$happy)) %>% # create data frame
     mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
     arrange(desc(Percentage))
@@ -56,13 +206,15 @@ happy_table <- happy |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt happy"
+    title = "Happy"
   )
 
 happy_table
+```
 
 
-# sad
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
+
 
 sad <- as.data.frame(table(data$sad)) %>% # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
@@ -86,14 +238,15 @@ sad_table <- sad |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt sad"
+    title = "Sad"
   )
 
 sad_table
+```
 
 
-# stressed
 
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
 stressed <- as.data.frame(table(data$stressed)) %>% # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
   arrange(desc(Percentage))
@@ -116,12 +269,17 @@ stressed_table <- stressed |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt stressed"
+    title = "Stressed"
   )
 
 stressed_table
+```
 
-# angry
+
+
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
+
 
 angry <- as.data.frame(table(data$angry)) %>% # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
@@ -145,10 +303,14 @@ angry_table <- angry |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt angry"
+    title = "Angry"
   )
 
 angry_table
+
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
 
 # frustrated
 
@@ -174,10 +336,17 @@ frustrated_table <- frustrated |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt frustrated"
+    title = "Frustrated"
   )
 
 frustrated_table
+
+```
+
+
+
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
 
 # tired
 
@@ -203,10 +372,14 @@ tired_table <- tired |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt tired"
+    title = "Tired"
   )
 
 tired_table
+
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
 
 # hopeful
 
@@ -232,10 +405,14 @@ hopeful_table <- hopeful |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt hopeful"
+    title = "Hopeful"
   )
 
 hopeful_table
+
+```
+
+```{r message=FALSE, warning=FALSE, echo=FALSE, include = FALSE}
 
 # worried
 
@@ -261,80 +438,8 @@ worried_table <- worried |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header(
-    title = "I felt worried"
+    title = "Worried"
   )
 
 worried_table
-
-
-# View(data)
-# 
-# housing <- as.data.frame(table(data$housing)) %>% # create data frame
-#     mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
-#     arrange(desc(Percentage))
-# 
-# housing_table <- housing %>%
-#     gt() %>%
-#     cols_label(
-#         Var1 = "Response",
-#         Freq = "Count") %>%
-#     cols_align(
-#         align = "left",
-#         columns = Var1
-#         ) # add additional cols_align if need to align additional columns
-# 
-# housing_table
-# 
-# 
-# household_income <- as.data.frame(table(data$household_income)) %>%
-#     mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
-#     arrange(desc(Percentage))
-# 
-# household_income_table <- household_income %>%
-#     gt() %>%
-#     cols_label(
-#         Var1 = "Response",
-#         Freq = "Count") %>%
-#     cols_align(
-#         align = "left",
-#         columns = Var1
-#         ) # add additional cols_align if need to align additional columns
-# 
-# household_income_table
-# 
-# 
-# str(data$zip_code)
-# data$zip_code_factor <- as.factor(data$zip_code)
-# levels(data$zip_code_factor)
-
-# Variables
-# age
-# zip_code
-# county
-# household_income
-# single_parent
-# occupation
-# housing
-# food
-# housing_stress
-# energy_stress
-# food_stress
-# trans_stress
-# internet_access
-# internet_devices
-# child_care
-# child_care_needs
-# child_care_stress
-# clothing_stress
-# services
-# organizations
-# resources_non_access
-# why_non_access
-# happy
-# angry
-# stressed
-# angry
-# frustrated
-# tired
-# hopeful
-# worried
+```

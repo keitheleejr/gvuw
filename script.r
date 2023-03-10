@@ -12,7 +12,6 @@ serv_need <- data |>
   select(resources_non_access) |> 
   arrange(resources_non_access)
 
-<<<<<<< HEAD
 table <- as_tibble(unlist(strsplit(serv_need$resources_non_access,",")))
 
 table |> 
@@ -36,7 +35,6 @@ table |>
 # Happy
 
 happy <- as.data.frame(table(data$happy)) %>% # create data frame
-=======
 
 
 data |> 
@@ -57,7 +55,6 @@ data |>
   ggsave("response-by-county.png")
 
 housing <- as.data.frame(table(data$housing)) %>% # create data frame
->>>>>>> e3eca85f13538c3485f40a195160cb0e307cd894
     mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) %>%
     arrange(desc(Percentage))
 

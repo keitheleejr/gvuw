@@ -6,6 +6,8 @@ library(tidyverse)
 library(gt)
 library(gtExtras)
 
+# load data
+
 data <- read_survey("qualtrics-data.csv")
 data <- data |> 
   filter(!is.na(county))

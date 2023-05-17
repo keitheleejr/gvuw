@@ -10,7 +10,8 @@ library(gtExtras)
 
 data <- read_survey("qualtrics-data.csv")
 data <- data |> 
-  filter(!is.na(county))
+  filter(!is.na(county)) |> 
+  mutate(county = tolower(county))
 
 ##### MAPS #####
 
@@ -51,7 +52,8 @@ all_county_map <- ggplot(map_data, aes(x = long,
   geom_polygon(color = "black") + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
+  theme(legend.position = "bottom") +
+  scale_fill_gradient(name = "Number of\nResponses",
                       low="#fafcff", 
                       high="#1757bf", 
                       na.value = "grey75")
@@ -67,30 +69,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-atkinson_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "atkinson") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-atkinson_map_data <- inner_join(atkinson_geo, map_data,
-                               by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+atkinson_map_data <- map_data
+
+atkinson_map_data <- atkinson_map_data |> 
+  mutate(fill = ifelse(county == "atkinson", "blue", "white"))
 
 
 
 atkinson_map <- ggplot(atkinson_map_data, aes(x = long, 
                                             y = lat, 
-                                            fill = n,
-                                            group = n)) +
+                                            fill = fill,
+                                            group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 atkinson_map
 
 
@@ -102,33 +119,48 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-bacon_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "bacon") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-bacon_map_data <- inner_join(bacon_geo, map_data,
-                                by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+bacon_map_data <- map_data
+
+bacon_map_data <- bacon_map_data |> 
+  mutate(fill = ifelse(county == "bacon", "blue", "white"))
 
 
 
 bacon_map <- ggplot(bacon_map_data, aes(x = long, 
                                               y = lat, 
-                                              fill = n,
-                                              group = n)) +
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 bacon_map
 
-###### Berrien ######
+###### Berrien #######
 
 map_data <- data |> 
   mutate(county = tolower(county)) |> 
@@ -136,30 +168,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-berrien_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "berrien") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-berrien_map_data <- inner_join(berrien_geo, map_data,
-                                by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+berrien_map_data <- map_data
+
+berrien_map_data <- berrien_map_data |> 
+  mutate(fill = ifelse(county == "berrien", "blue", "white"))
 
 
 
 berrien_map <- ggplot(berrien_map_data, aes(x = long, 
-                                              y = lat, 
-                                              fill = n,
-                                              group = n)) +
+                                        y = lat, 
+                                        fill = fill,
+                                        group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 berrien_map
 
 ###### Brooks ######
@@ -170,30 +217,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-brooks_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "brooks") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-brooks_map_data <- inner_join(brooks_geo, map_data,
-                                by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+brooks_map_data <- map_data
+
+brooks_map_data <- brooks_map_data |> 
+  mutate(fill = ifelse(county == "brooks", "blue", "white"))
 
 
 
 brooks_map <- ggplot(brooks_map_data, aes(x = long, 
                                               y = lat, 
-                                              fill = n,
-                                              group = n)) +
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 brooks_map
 
 ###### Clinch #####
@@ -204,30 +266,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-clinch_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "clinch") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-clinch_map_data <- inner_join(clinch_geo, map_data,
-                              by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+clinch_map_data <- map_data
+
+clinch_map_data <- clinch_map_data |> 
+  mutate(fill = ifelse(county == "clinch", "blue", "white"))
 
 
 
 clinch_map <- ggplot(clinch_map_data, aes(x = long, 
-                                          y = lat, 
-                                          fill = n,
-                                          group = n)) +
+                                              y = lat, 
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 clinch_map
 
 ###### Coffee ######
@@ -238,30 +315,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-coffee_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "coffee") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-coffee_map_data <- inner_join(coffee_geo, map_data,
-                              by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+coffee_map_data <- map_data
+
+coffee_map_data <- coffee_map_data |> 
+  mutate(fill = ifelse(county == "coffee", "blue", "white"))
 
 
 
 coffee_map <- ggplot(coffee_map_data, aes(x = long, 
-                                          y = lat, 
-                                          fill = n,
-                                          group = n)) +
+                                              y = lat, 
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 coffee_map
 
 ###### Echols ######
@@ -272,30 +364,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-echols_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "echols") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-echols_map_data <- inner_join(echols_geo, map_data,
-                              by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+echols_map_data <- map_data
+
+echols_map_data <- echols_map_data |> 
+  mutate(fill = ifelse(county == "echols", "blue", "white"))
 
 
 
 echols_map <- ggplot(echols_map_data, aes(x = long, 
-                                          y = lat, 
-                                          fill = n,
-                                          group = n)) +
+                                              y = lat, 
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 echols_map
 
 ###### Jeff Davis ########
@@ -306,30 +413,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-jeffdavis_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "jeff davis") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-jeffdavis_map_data <- inner_join(jeffdavis_geo, map_data,
-                                 by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+jeffdavis_map_data <- map_data
+
+jeffdavis_map_data <- jeffdavis_map_data |> 
+  mutate(fill = ifelse(county == "jeff davis", "blue", "white"))
 
 
 
 jeffdavis_map <- ggplot(jeffdavis_map_data, aes(x = long, 
-                                                y = lat, 
-                                                fill = n,
-                                                group = n)) +
+                                              y = lat, 
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 jeffdavis_map
 
 ###### Lanier ######
@@ -340,30 +462,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-lanier_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "lanier") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-lanier_map_data <- inner_join(lanier_geo, map_data,
-                              by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+lanier_map_data <- map_data
+
+lanier_map_data <- lanier_map_data |> 
+  mutate(fill = ifelse(county == "lanier", "blue", "white"))
 
 
 
 lanier_map <- ggplot(lanier_map_data, aes(x = long, 
-                                          y = lat, 
-                                          fill = n,
-                                          group = n)) +
+                                              y = lat, 
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 lanier_map
 
 ###### Lowndes #####
@@ -376,32 +513,46 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-lowndes_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "lowndes") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-lowndes_map_data <- inner_join(lowndes_geo, map_data,
+map_data <- inner_join(geo_counties, map_data,
                        by = "county")
 
 
 
+lowndes_map_data <- map_data
+
+lowndes_map_data <- lowndes_map_data |> 
+  mutate(fill = ifelse(county == "lowndes", "blue", "white"))
+
+
+
 lowndes_map <- ggplot(lowndes_map_data, aes(x = long, 
-                                       y = lat, 
-                                       fill = n,
-                                       group = n)) +
+                                              y = lat, 
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
-lowndes_map
+  scale_fill_identity()
 
+lowndes_map
 
 
 ###### Ware #######
@@ -412,30 +563,45 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
-ware_geo <- map_data("county") |> 
+geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county == "ware") 
+         county %in% c("atkinson",
+                       "bacon",
+                       "berrien",
+                       "brooks",
+                       "clinch",
+                       "coffee",
+                       "echols",
+                       "jeff davis",
+                       "lanier",
+                       "lowndes",
+                       "ware")) 
 
 
 
-ware_map_data <- inner_join(ware_geo, map_data,
-                            by = "county")
+map_data <- inner_join(geo_counties, map_data,
+                       by = "county")
+
+
+
+ware_map_data <- map_data
+
+ware_map_data <- ware_map_data |> 
+  mutate(fill = ifelse(county == "ware", "blue", "white"))
 
 
 
 ware_map <- ggplot(ware_map_data, aes(x = long, 
-                                      y = lat, 
-                                      fill = n,
-                                      group = n)) +
+                                              y = lat, 
+                                              fill = fill,
+                                              group = group)) +
   geom_polygon(color = "black",
-               show.legend = FALSE) + 
+               show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_gradient(name = "Number of Responses",
-                      low="#6b9be3", 
-                      high="#6b9be3", 
-                      na.value = "grey75")
+  scale_fill_identity()
+
 ware_map
 
 #### ALL COUNTIES ####
@@ -444,11 +610,7 @@ ware_map
 
 household_income <- as.data.frame(table(data$household_income)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-hi_table <- household_income |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
                                        '$70,001 - $90,000',
                                        '$50,001 - $70,000',
@@ -468,29 +630,23 @@ hi_table <- household_income |>
   cols_hide(Ordered) |> 
   tab_header("What was your household income for 2022?")
 
-hi_table
 
 ###### single_parent #####
 
 single_parent <- as.data.frame(table(data$single_parent)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-sp_table <- single_parent |> 
+  arrange(desc(Percentage)) |> 
   gt() |>
   cols_label(
     Var1 = "Response",
     Freq = "Count") |>
   tab_header("Do you live in a single parent 
-             household?") |> 
+           household?") |> 
   tab_options(table.align = "left") |> 
   cols_align(
     align = "left",
     columns = Var1
   ) # add additional cols_align if need to align additional columns
-
-sp_table
 
 
 
@@ -499,32 +655,26 @@ sp_table
 housing <- as.data.frame(table(data$housing)) |> # create data frame
   filter(Var1 != "Other (please specify)") |> 
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-housing_table <- housing |> 
+  arrange(desc(Percentage)) |> 
   gt() |>
   cols_label(
     Var1 = "Response",
     Freq = "Count") |>
   tab_header("Which option best describes your 
-             current housing situation?") |> 
+           current housing situation?") |> 
   cols_align(
     align = "left",
     columns = Var1
   ) # add additional cols_align if need to align additional columns
 
-housing_table
+
 
 ###### food #####
- 
+
 
 
 food <- as.data.frame(table(data$food)) |> # create data frame
-  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) 
-
-
-food_table <- food |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
   mutate(Ordered = fct_relevel(Var1, c('All of the time', 
                                        'Most of the time',
                                        'Some of the time',
@@ -542,22 +692,13 @@ food_table <- food |>
   tab_options(table.align = "left") |> 
   cols_hide(Ordered) |> 
   tab_header("How often, if at all, is there enough food in 
-             your household to feed all household members?")
-
-  
-
-food_table
-
-
-
+           your household to feed all household members?")
 
 
 ###### internet_access #####
 
 internet_access <- as.data.frame(table(data$internet_access)) |> 
-  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) 
-
-ia_table <- internet_access |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
   mutate(Ordered = fct_relevel(Var1, c("Very reliable",
                                        "Somewhat reliable",
                                        "Not at all reliable",
@@ -575,8 +716,7 @@ ia_table <- internet_access |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header("At home, how reliable 
-             is your internet access?" )
-ia_table
+           is your internet access?" )
 
 ###### internet_devices #####
 
@@ -585,16 +725,14 @@ ia_table
 ###### child_care #####
 
 child_care <- as.data.frame(table(data$child_care)) |> 
-  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) 
-
-cc_table <- child_care |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
   mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
                                        "Yes, we have additional child care needs",
                                        "Yes, we require child care but do not have it",
                                        "Not applicable, my children are old enough they do not require childcare",
                                        "Not applicable, I do not have children")
-                               )
-         ) |> 
+  )
+  ) |> 
   arrange(Ordered) |> 
   gt() |> 
   cols_label(
@@ -607,17 +745,13 @@ cc_table <- child_care |>
   cols_hide(Ordered) |> 
   tab_header("Do you require childcare?")
 
-cc_table
 
 ###### child_care_needs #####
 
 child_care_needs <- as.data.frame(table(data$child_care_needs)) |> 
-  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) 
-
-ccn_table <- child_care_needs |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
   mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
-                                       "After-school child care",
-                                       "Other (please specify)")
+                                       "After-school child care")
   )
   ) |> 
   arrange(Ordered) |> 
@@ -631,16 +765,13 @@ ccn_table <- child_care_needs |>
   ) |> 
   cols_hide(Ordered) |> 
   tab_header("Which option best 
-             describes your child care needs?")
+           describes your child care needs?")
 
-ccn_table
 
 
 ###### services #####
 
-services_plot <- as_tibble(unlist(strsplit(data$services,",")))
-
-sn_plot <- services_plot |> 
+services_plot <- as_tibble(unlist(strsplit(data$services,","))) |> 
   filter(!is.na(value),
          value != "Other (please specify)") |> # learn how to remove the space here
   group_by(value) |> 
@@ -656,13 +787,10 @@ sn_plot <- services_plot |>
   theme_classic() + 
   theme(legend.position = "none")
 
-sn_plot
 
 ###### organizations #####
 
-org_table <- as_tibble(unlist(strsplit(data$organizations,",")))
-
-org_table |> 
+org <- as_tibble(unlist(strsplit(data$organizations,","))) |> 
   filter(!is.na(value),
          value != "Other (please specify)") |> # learn how to remove the space here
   group_by(value) |> 
@@ -681,9 +809,7 @@ org_table |>
 ###### resources_non_access #####
 
 
-rna_table <- as_tibble(unlist(strsplit(data$resources_non_access,",")))
-
-rna_table |> 
+rna <- as_tibble(unlist(strsplit(data$resources_non_access,","))) |> 
   filter(!is.na(value),
          value != "None",
          value != "Other (please specify)",
@@ -704,9 +830,7 @@ rna_table |>
 ###### why_non_access  #####
 
 
-wna_table <- as_tibble(unlist(strsplit(data$why_non_access,",")))
-
-wna_table |> 
+wna <- as_tibble(unlist(strsplit(data$why_non_access,","))) |> 
   filter(!is.na(value),
          value != "Other (please specify)") |> 
   group_by(value) |> 
@@ -726,7 +850,442 @@ wna_table |>
 
 ###### Happy #####
 
-happy_table <- as.data.frame(table(data$happy)) |>  # create data frame 
+happy <- as.data.frame(table(data$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad <- as.data.frame(table(data$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed <- as.data.frame(table(data$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry <- as.data.frame(table(data$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated <- as.data.frame(table(data$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired <- as.data.frame(table(data$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful <- as.data.frame(table(data$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+           felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried <- as.data.frame(table(data$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt worried since January 2022.")
+
+
+
+##### Atkinson #####
+
+atkinson <- data |> 
+  filter(county == "atkinson")
+
+###### household_income ####
+
+household_income_atkinson <- as.data.frame(table(atkinson$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_atkinson <- as.data.frame(table(atkinson$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+             household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_atkinson <- as.data.frame(table(atkinson$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+             current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_atkinson <- as.data.frame(table(atkinson$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+             your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_atkinson <- as.data.frame(table(atkinson$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+             is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_atkinson <- as.data.frame(table(atkinson$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_atkinson <- as.data.frame(table(atkinson$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+             describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_atkinson <- as_tibble(unlist(strsplit(atkinson$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_atkinson <- as_tibble(unlist(strsplit(atkinson$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_atkinson <- as_tibble(unlist(strsplit(atkinson$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_atkinson <- as_tibble(unlist(strsplit(atkinson$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_atkinson <- as.data.frame(table(atkinson$happy)) |>  # create data frame 
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
   arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
@@ -746,18 +1305,13 @@ happy_table <- as.data.frame(table(data$happy)) |>  # create data frame
   tab_header("Please rate how often you have 
              felt happy since January 2022.")
 
-happy_table
 
 
 ###### sad #####
 
-sad <- as.data.frame(table(data$sad)) |> # create data frame
+sad_atkinson <- as.data.frame(table(atkinson$sad)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-sad_table <- sad |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
                                        'Most of the time',
                                        'Some of the time',
@@ -775,18 +1329,13 @@ sad_table <- sad |>
   tab_header("Please rate how often you have 
              felt sad since January 2022.")
 
-sad_table
 
 
 ###### stressed #####
 
-stressed <- as.data.frame(table(data$stressed)) |> # create data frame
+stressed_atkinson <- as.data.frame(table(atkinson$stressed)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-stressed_table <- stressed |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
                                        'Most of the time',
                                        'Some of the time',
@@ -804,17 +1353,12 @@ stressed_table <- stressed |>
   tab_header("Please rate how often you have 
              felt stressed since January 2022.")
 
-stressed_table
 
 ###### angry #####
 
-angry <- as.data.frame(table(data$angry)) |> # create data frame
+angry_atkinson <- as.data.frame(table(atkinson$angry)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-angry_table <- angry |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
                                        'Most of the time',
                                        'Some of the time',
@@ -832,17 +1376,12 @@ angry_table <- angry |>
   tab_header("Please rate how often you have 
              felt angry since January 2022.")
 
-angry_table
 
 ###### frustrated #####
 
-frustrated <- as.data.frame(table(data$frustrated)) |> # create data frame
+frustrated_atkinson <- as.data.frame(table(atkinson$frustrated)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-frustrated_table <- frustrated |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
                                        'Most of the time',
                                        'Some of the time',
@@ -860,17 +1399,13 @@ frustrated_table <- frustrated |>
   tab_header("Please rate how often you have 
              felt frustrated since January 2022.")
 
-frustrated_table
+
 
 ###### tired #####
 
-tired <- as.data.frame(table(data$tired)) |> # create data frame
+tired_atkinson <- as.data.frame(table(atkinson$tired)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-tired_table <- tired |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
                                        'Most of the time',
                                        'Some of the time',
@@ -888,17 +1423,12 @@ tired_table <- tired |>
   tab_header("Please rate how often you have 
              felt tired since January 2022.")
 
-tired_table
 
 ###### hopeful #####
 
-hopeful <- as.data.frame(table(data$hopeful)) |> # create data frame
+hopeful_atkinson <- as.data.frame(table(atkinson$hopeful)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-hopeful_table <- hopeful |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
                                        'Most of the time',
                                        'Some of the time',
@@ -916,17 +1446,12 @@ hopeful_table <- hopeful |>
   tab_header("Please rate how often you have 
              felt hopeful since January 2022.")
 
-hopeful_table
 
 ###### worried #####
 
-worried <- as.data.frame(table(data$worried)) |> # create data frame
+worried_atkinson <- as.data.frame(table(atkinson$worried)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-worried_table <- worried |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
                                        'Most of the time',
                                        'Some of the time',
@@ -944,23 +1469,18 @@ worried_table <- worried |>
   tab_header("Please rate how often you have 
              felt worried since January 2022.")
 
-worried_table
+
+##### Bacon ###### 
 
 
+bacon <- data |> 
+  filter(county == "bacon")
 
+###### household_income ####
 
-##### Atkinson #####
-
-atkinson <- data |> 
-  filter(county == "Atkinson")
-
-household_income_atkinson <- as.data.frame(table(atkinson$household_income)) |> # create data frame
+household_income_bacon <- as.data.frame(table(bacon$household_income)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-
-hi_table_atkinson <- household_income_atkinson |> 
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
                                        '$70,001 - $90,000',
                                        '$50,001 - $70,000',
@@ -976,39 +1496,55 @@ hi_table_atkinson <- household_income_atkinson |>
     align = "left",
     columns = Var1
   ) |> 
+  tab_options(table.align = "left") |> 
   cols_hide(Ordered) |> 
   tab_header("What was your household income for 2022?")
 
-hi_table_atkinson
 
+###### single_parent #####
 
-
-single_parent_atkinson <- as.data.frame(table(atkinson$single_parent)) |> # create data frame
+single_parent_bacon <- as.data.frame(table(bacon$single_parent)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-sp_table_atkinson <- single_parent_atkinson |> 
+  arrange(desc(Percentage)) |> 
   gt() |>
   cols_label(
     Var1 = "Response",
     Freq = "Count") |>
-  tab_header("Do you live in a single parent household?") |> 
+  tab_header("Do you live in a single parent 
+             household?") |> 
+  tab_options(table.align = "left") |> 
   cols_align(
     align = "left",
     columns = Var1
   ) # add additional cols_align if need to align additional columns
 
-sp_table_atkinson
 
 
+###### housing #####
 
-food_atkinson <- as.data.frame(table(atkinson$food)) |> # create data frame
+housing_bacon <- as.data.frame(table(bacon$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+             current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
 
 
-food_table_atkinson <- food_atkinson |> 
+
+###### food #####
+
+
+
+food_bacon <- as.data.frame(table(bacon$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
   mutate(Ordered = fct_relevel(Var1, c('All of the time', 
                                        'Most of the time',
                                        'Some of the time',
@@ -1023,27 +1559,362 @@ food_table_atkinson <- food_atkinson |>
     align = "left",
     columns = Var1
   ) |> 
+  tab_options(table.align = "left") |> 
   cols_hide(Ordered) |> 
   tab_header("How often, if at all, is there enough food in 
              your household to feed all household members?")
 
-food_table_atkinson
+
+###### internet_access #####
+
+internet_access_bacon <- as.data.frame(table(bacon$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+             is your internet access?" )
+
+###### internet_devices #####
 
 
 
+###### child_care #####
 
-### Lowndes ######################
+child_care_bacon <- as.data.frame(table(bacon$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
 
-lowndes <- data |> 
-  filter(county == "Lowndes")
 
-household_income_lowndes <- as.data.frame(table(lowndes$household_income)) |> # create data frame
+###### child_care_needs #####
+
+child_care_needs_bacon <- as.data.frame(table(bacon$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+             describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_bacon <- as_tibble(unlist(strsplit(bacon$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_bacon <- as_tibble(unlist(strsplit(bacon$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_bacon <- as_tibble(unlist(strsplit(bacon$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_bacon <- as_tibble(unlist(strsplit(bacon$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_bacon <- as.data.frame(table(bacon$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_bacon <- as.data.frame(table(bacon$sad)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt sad since January 2022.")
 
 
 
-hi_table_lowndes <- household_income_lowndes |> 
+###### stressed #####
+
+stressed_bacon <- as.data.frame(table(bacon$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_bacon <- as.data.frame(table(bacon$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_bacon <- as.data.frame(table(bacon$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_bacon <- as.data.frame(table(bacon$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_bacon <- as.data.frame(table(bacon$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+             felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_bacon <- as.data.frame(table(bacon$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt worried since January 2022.")
+
+
+#### Berrien ####
+
+berrien <- data |> 
+  filter(county == "berrien")
+
+###### household_income ####
+
+household_income_berrien <- as.data.frame(table(berrien$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
   mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
                                        '$70,001 - $90,000',
                                        '$50,001 - $70,000',
@@ -1059,39 +1930,3089 @@ hi_table_lowndes <- household_income_lowndes |>
     align = "left",
     columns = Var1
   ) |> 
+  tab_options(table.align = "left") |> 
   cols_hide(Ordered) |> 
   tab_header("What was your household income for 2022?")
 
-hi_table_lowndes
 
+###### single_parent #####
 
-
-single_parent_lowndes <- as.data.frame(table(lowndes$single_parent)) |> # create data frame
+single_parent_berrien <- as.data.frame(table(berrien$single_parent)) |> # create data frame
   mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-sp_table_lowndes <- single_parent_lowndes |> 
+  arrange(desc(Percentage)) |> 
   gt() |>
   cols_label(
     Var1 = "Response",
     Freq = "Count") |>
-  tab_header("Do you live in a single parent household?") |> 
+  tab_header("Do you live in a single parent 
+             household?") |> 
+  tab_options(table.align = "left") |> 
   cols_align(
     align = "left",
     columns = Var1
   ) # add additional cols_align if need to align additional columns
 
-sp_table_lowndes
+
+
+###### housing #####
+
+housing_berrien <- as.data.frame(table(berrien$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+             current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_berrien <- as.data.frame(table(berrien$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+             your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_berrien <- as.data.frame(table(berrien$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+             is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_berrien <- as.data.frame(table(berrien$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_berrien <- as.data.frame(table(berrien$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+             describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_berrien <- as_tibble(unlist(strsplit(berrien$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_berrien <- as_tibble(unlist(strsplit(berrien$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_berrien <- as_tibble(unlist(strsplit(berrien$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_berrien <- as_tibble(unlist(strsplit(berrien$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_berrien <- as.data.frame(table(berrien$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_berrien <- as.data.frame(table(berrien$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_berrien <- as.data.frame(table(berrien$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_berrien <- as.data.frame(table(berrien$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_berrien <- as.data.frame(table(berrien$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_berrien <- as.data.frame(table(berrien$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_berrien <- as.data.frame(table(berrien$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+             felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_berrien <- as.data.frame(table(berrien$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt worried since January 2022.")
+
+##### Brooks ######
+
+brooks <- data |> 
+  filter(county == "brooks")
+
+###### household_income ####
+
+household_income_brooks <- as.data.frame(table(brooks$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_brooks <- as.data.frame(table(brooks$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+             household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_brooks <- as.data.frame(table(brooks$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+             current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_brooks <- as.data.frame(table(brooks$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+             your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_brooks <- as.data.frame(table(brooks$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+             is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_brooks <- as.data.frame(table(brooks$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_brooks <- as.data.frame(table(brooks$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+             describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_brooks <- as_tibble(unlist(strsplit(brooks$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_brooks <- as_tibble(unlist(strsplit(brooks$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_brooks <- as_tibble(unlist(strsplit(brooks$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_brooks <- as_tibble(unlist(strsplit(brooks$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_brooks <- as.data.frame(table(brooks$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_brooks <- as.data.frame(table(brooks$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_brooks <- as.data.frame(table(brooks$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_brooks <- as.data.frame(table(brooks$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_brooks <- as.data.frame(table(brooks$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_brooks <- as.data.frame(table(brooks$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_brooks <- as.data.frame(table(brooks$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+             felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_brooks <- as.data.frame(table(brooks$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt worried since January 2022.")
+
+##### Clinch #####
+
+clinch <- data |> 
+  filter(county == "clinch")
+
+###### household_income ####
+
+household_income_clinch <- as.data.frame(table(clinch$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_clinch <- as.data.frame(table(clinch$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+             household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_clinch <- as.data.frame(table(clinch$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+             current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_clinch <- as.data.frame(table(clinch$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+             your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_clinch <- as.data.frame(table(clinch$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+             is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_clinch <- as.data.frame(table(clinch$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_clinch <- as.data.frame(table(clinch$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+             describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_clinch <- as_tibble(unlist(strsplit(clinch$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_clinch <- as_tibble(unlist(strsplit(clinch$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_clinch <- as_tibble(unlist(strsplit(clinch$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_clinch <- as_tibble(unlist(strsplit(clinch$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_clinch <- as.data.frame(table(clinch$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_clinch <- as.data.frame(table(clinch$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_clinch <- as.data.frame(table(clinch$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_clinch <- as.data.frame(table(clinch$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_clinch <- as.data.frame(table(clinch$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_clinch <- as.data.frame(table(clinch$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_clinch <- as.data.frame(table(clinch$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+             felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_clinch <- as.data.frame(table(clinch$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+             felt worried since January 2022.")
+
+
+##### Coffee ######
+
+coffee <- data |> 
+  filter(county == "coffee")
+
+###### household_income ####
+
+household_income_coffee <- as.data.frame(table(coffee$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_coffee <- as.data.frame(table(coffee$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+           household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_coffee <- as.data.frame(table(coffee$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+           current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_coffee <- as.data.frame(table(coffee$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+           your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_coffee <- as.data.frame(table(coffee$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+           is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_coffee <- as.data.frame(table(coffee$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_coffee <- as.data.frame(table(coffee$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+           describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_coffee <- as_tibble(unlist(strsplit(coffee$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_coffee <- as_tibble(unlist(strsplit(coffee$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_coffee <- as_tibble(unlist(strsplit(coffee$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_coffee <- as_tibble(unlist(strsplit(coffee$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_coffee <- as.data.frame(table(coffee$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_coffee <- as.data.frame(table(coffee$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_coffee <- as.data.frame(table(coffee$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_coffee <- as.data.frame(table(coffee$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_coffee <- as.data.frame(table(coffee$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_coffee <- as.data.frame(table(coffee$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_coffee <- as.data.frame(table(coffee$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+           felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_coffee <- as.data.frame(table(coffee$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt worried since January 2022.")
+
+##### Echols ######
+
+echols <- data |> 
+  filter(county == "echols")
+
+###### household_income ####
+
+household_income_echols <- as.data.frame(table(echols$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_echols <- as.data.frame(table(echols$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+           household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_echols <- as.data.frame(table(echols$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+           current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_echols <- as.data.frame(table(echols$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+           your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_echols <- as.data.frame(table(echols$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+           is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_echols <- as.data.frame(table(echols$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_echols <- as.data.frame(table(echols$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+           describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_echols <- as_tibble(unlist(strsplit(echols$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_echols <- as_tibble(unlist(strsplit(echols$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_echols <- as_tibble(unlist(strsplit(echols$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_echols <- as_tibble(unlist(strsplit(echols$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_echols <- as.data.frame(table(echols$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_echols <- as.data.frame(table(echols$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_echols <- as.data.frame(table(echols$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_echols <- as.data.frame(table(echols$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_echols <- as.data.frame(table(echols$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_echols <- as.data.frame(table(echols$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_echols <- as.data.frame(table(echols$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+           felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_echols <- as.data.frame(table(echols$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt worried since January 2022.")
+
+
+##### Jeff Davis ######
+
+jeffdavis <- data |> 
+  filter(county == "jeff davis")
+
+###### household_income ####
+
+household_income_jeffdavis <- as.data.frame(table(jeffdavis$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_jeffdavis <- as.data.frame(table(jeffdavis$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+           household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_jeffdavis <- as.data.frame(table(jeffdavis$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+           current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_jeffdavis <- as.data.frame(table(jeffdavis$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+           your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_jeffdavis <- as.data.frame(table(jeffdavis$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+           is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_jeffdavis <- as.data.frame(table(jeffdavis$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_jeffdavis <- as.data.frame(table(jeffdavis$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+           describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_jeffdavis <- as_tibble(unlist(strsplit(jeffdavis$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_jeffdavis <- as_tibble(unlist(strsplit(jeffdavis$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_jeffdavis <- as_tibble(unlist(strsplit(jeffdavis$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_jeffdavis <- as_tibble(unlist(strsplit(jeffdavis$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_jeffdavis <- as.data.frame(table(jeffdavis$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_jeffdavis <- as.data.frame(table(jeffdavis$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_jeffdavis <- as.data.frame(table(jeffdavis$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_jeffdavis <- as.data.frame(table(jeffdavis$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_jeffdavis <- as.data.frame(table(jeffdavis$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_jeffdavis <- as.data.frame(table(jeffdavis$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_jeffdavis <- as.data.frame(table(jeffdavis$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+           felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_jeffdavis <- as.data.frame(table(jeffdavis$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt worried since January 2022.")
+
+
+##### Lanier ######
+
+lanier <- data |> 
+  filter(county == "lanier")
+
+###### household_income ####
+
+household_income_lanier <- as.data.frame(table(lanier$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_lanier <- as.data.frame(table(lanier$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+           household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_lanier <- as.data.frame(table(lanier$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+           current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_lanier <- as.data.frame(table(lanier$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+           your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_lanier <- as.data.frame(table(lanier$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+           is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_lanier <- as.data.frame(table(lanier$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_lanier <- as.data.frame(table(lanier$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+           describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_lanier <- as_tibble(unlist(strsplit(lanier$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_lanier <- as_tibble(unlist(strsplit(lanier$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_lanier <- as_tibble(unlist(strsplit(lanier$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_lanier <- as_tibble(unlist(strsplit(lanier$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_lanier <- as.data.frame(table(lanier$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_lanier <- as.data.frame(table(lanier$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_lanier <- as.data.frame(table(lanier$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_lanier <- as.data.frame(table(lanier$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_lanier <- as.data.frame(table(lanier$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_lanier <- as.data.frame(table(lanier$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_lanier <- as.data.frame(table(lanier$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+           felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_lanier <- as.data.frame(table(lanier$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt worried since January 2022.")
+
+##### Lowndes ######
+
+lowndes <- data |> 
+  filter(county == "lowndes")
+
+###### household_income ####
+
+household_income_lowndes <- as.data.frame(table(lowndes$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_lowndes <- as.data.frame(table(lowndes$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+           household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_lowndes <- as.data.frame(table(lowndes$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+           current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
 
 
 
 food_lowndes <- as.data.frame(table(lowndes$food)) |> # create data frame
-  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
-  arrange(desc(Percentage))
-
-
-food_table_lowndes <- food_lowndes |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
   mutate(Ordered = fct_relevel(Var1, c('All of the time', 
                                        'Most of the time',
                                        'Some of the time',
@@ -1106,9 +5027,782 @@ food_table_lowndes <- food_lowndes |>
     align = "left",
     columns = Var1
   ) |> 
+  tab_options(table.align = "left") |> 
   cols_hide(Ordered) |> 
   tab_header("How often, if at all, is there enough food in 
-             your household to feed all household members?")
+           your household to feed all household members?")
 
-food_table_lowndes
+
+###### internet_access #####
+
+internet_access_lowndes <- as.data.frame(table(lowndes$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+           is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_lowndes <- as.data.frame(table(lowndes$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_lowndes <- as.data.frame(table(lowndes$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+           describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_lowndes <- as_tibble(unlist(strsplit(lowndes$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_lowndes <- as_tibble(unlist(strsplit(lowndes$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_lowndes <- as_tibble(unlist(strsplit(lowndes$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_lowndes <- as_tibble(unlist(strsplit(lowndes$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_lowndes <- as.data.frame(table(lowndes$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_lowndes <- as.data.frame(table(lowndes$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_lowndes <- as.data.frame(table(lowndes$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_lowndes <- as.data.frame(table(lowndes$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_lowndes <- as.data.frame(table(lowndes$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_lowndes <- as.data.frame(table(lowndes$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_lowndes <- as.data.frame(table(lowndes$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+           felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_lowndes <- as.data.frame(table(lowndes$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt worried since January 2022.")
+
+
+##### Ware ######
+
+ware <- data |> 
+  filter(county == "ware")
+
+###### household_income ####
+
+household_income_ware <- as.data.frame(table(ware$household_income)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Greater than $90,000', 
+                                       '$70,001 - $90,000',
+                                       '$50,001 - $70,000',
+                                       '$30,001 - $50,000',
+                                       '$0 - $30,000',
+                                       'Prefer not to answer')))  |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("What was your household income for 2022?")
+
+
+###### single_parent #####
+
+single_parent_ware <- as.data.frame(table(ware$single_parent)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Do you live in a single parent 
+           household?") |> 
+  tab_options(table.align = "left") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### housing #####
+
+housing_ware <- as.data.frame(table(ware$housing)) |> # create data frame
+  filter(Var1 != "Other (please specify)") |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  tab_header("Which option best describes your 
+           current housing situation?") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) # add additional cols_align if need to align additional columns
+
+
+
+###### food #####
+
+
+
+food_ware <- as.data.frame(table(ware$food)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2))  |> 
+  mutate(Ordered = fct_relevel(Var1, c('All of the time', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely',
+                                       'Never'))) |> 
+  arrange(Ordered) |>   
+  gt() |>
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  tab_options(table.align = "left") |> 
+  cols_hide(Ordered) |> 
+  tab_header("How often, if at all, is there enough food in 
+           your household to feed all household members?")
+
+
+###### internet_access #####
+
+internet_access_ware <- as.data.frame(table(ware$internet_access)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Very reliable",
+                                       "Somewhat reliable",
+                                       "Not at all reliable",
+                                       "Not applicable, I do not have internet access at home")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("At home, how reliable 
+           is your internet access?" )
+
+###### internet_devices #####
+
+
+
+###### child_care #####
+
+child_care_ware <- as.data.frame(table(ware$child_care)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Yes, my child care needs are met",
+                                       "Yes, we have additional child care needs",
+                                       "Yes, we require child care but do not have it",
+                                       "Not applicable, my children are old enough they do not require childcare",
+                                       "Not applicable, I do not have children")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Do you require childcare?")
+
+
+###### child_care_needs #####
+
+child_care_needs_ware <- as.data.frame(table(ware$child_care_needs)) |> 
+  mutate(Percentage = round(Freq / sum(Freq) * 100,2 )) |> 
+  mutate(Ordered = fct_relevel(Var1, c("Full-time child care",
+                                       "After-school child care")
+  )
+  ) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Which option best 
+           describes your child care needs?")
+
+
+
+###### services #####
+
+services_plot_ware <- as_tibble(unlist(strsplit(ware$services,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+###### organizations #####
+
+org_ware <- as_tibble(unlist(strsplit(ware$organizations,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### resources_non_access #####
+
+
+rna_ware <- as_tibble(unlist(strsplit(ware$resources_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "None",
+         value != "Other (please specify)",
+         value != " I was able to access all the resources I needed") |> # learn how to remove the space here
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Resources Needed",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+###### why_non_access  #####
+
+
+wna_ware <- as_tibble(unlist(strsplit(ware$why_non_access,","))) |> 
+  filter(!is.na(value),
+         value != "Other (please specify)") |> 
+  group_by(value) |> 
+  count() |> 
+  ggplot(aes(x = reorder(value,n), y = n, fill=value)) +
+  geom_col() + 
+  coord_flip() + 
+  labs(x = "Why were you unable to access resources?",
+       y = "Number of Respondents",
+       caption = "Updated April 28, 2023") +
+  geom_text(aes(label = n,
+                hjust = 1.25)) + 
+  theme_classic() + 
+  theme(legend.position = "none")
+
+
+
+###### Happy #####
+
+happy_ware <- as.data.frame(table(ware$happy)) |>  # create data frame 
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |> 
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt happy since January 2022.")
+
+
+
+###### sad #####
+
+sad_ware <- as.data.frame(table(ware$sad)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |> 
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt sad since January 2022.")
+
+
+
+###### stressed #####
+
+stressed_ware <- as.data.frame(table(ware$stressed)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt stressed since January 2022.")
+
+
+###### angry #####
+
+angry_ware <- as.data.frame(table(ware$angry)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt angry since January 2022.")
+
+
+###### frustrated #####
+
+frustrated_ware <- as.data.frame(table(ware$frustrated)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt frustrated since January 2022.")
+
+
+
+###### tired #####
+
+tired_ware <- as.data.frame(table(ware$tired)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt tired since January 2022.")
+
+
+###### hopeful #####
+
+hopeful_ware <- as.data.frame(table(ware$hopeful)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered)|> 
+  tab_header("Please rate how often you have 
+           felt hopeful since January 2022.")
+
+
+###### worried #####
+
+worried_ware <- as.data.frame(table(ware$worried)) |> # create data frame
+  mutate(Percentage = round(Freq / sum(Freq) * 100, 2)) |>
+  arrange(desc(Percentage)) |> 
+  mutate(Ordered = fct_relevel(Var1, c('Nearly always', 
+                                       'Most of the time',
+                                       'Some of the time',
+                                       'Rarely'))) |> 
+  arrange(Ordered) |> 
+  gt() |> 
+  cols_label(
+    Var1 = "Response",
+    Freq = "Count") |>
+  cols_align(
+    align = "left",
+    columns = Var1
+  ) |> 
+  cols_hide(Ordered) |> 
+  tab_header("Please rate how often you have 
+           felt worried since January 2022.")
 

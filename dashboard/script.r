@@ -106,7 +106,12 @@ atkinson_map <- ggplot(atkinson_map_data, aes(x = long,
                show.legend = TRUE) + 
   coord_map() +
   theme_void() +
-  scale_fill_identity()
+  # scale_fill_identity()
+theme(legend.position = "bottom") +
+  scale_fill_gradient(name = "Number of\nResponses",
+                      low="#fafcff", 
+                      high="#1757bf", 
+                      na.value = "grey75")
 
 atkinson_map
 

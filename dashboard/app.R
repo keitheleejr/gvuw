@@ -3,11 +3,104 @@ source("script.r")
 library(shiny)
 
 # Define UI for application that draws a histogram
+# ui <- fluidPage(
+#   theme = bslib::bs_theme(bootswatch = "lumen"),
+#   titlePanel("Greater Valdosta United Way Needs Assessment Results"),
+#   fluidRow(
+#     column(6,div(style = "height:20px")
+#     )
+#   ),
+#   fluidRow(
+#     column(6,div(style = "height:20px"))
+#     
+#   ),
+#   fluidRow(
+#     column(1),
+#     column(4,
+#            h4("Select a county to display."),
+#            selectInput("county",
+#                        label = "",
+#                        choices = c("All Counties",
+#                                    "Atkinson",
+#                                    "Bacon",
+#                                    "Berrien",
+#                                    "Brooks",
+#                                    "Clinch",
+#                                    "Coffee",
+#                                    "Echols",
+#                                    "Jeff Davis",
+#                                    "Lanier",
+#                                    "Lowndes",
+#                                    "Ware"))),
+#     column(7,
+#            h4("Choose a variable to display."),
+#            selectInput("var",
+#                        label = "",
+#                        choices = c("Angry",
+#                                    "Child Care",
+#                                    "Child Care Needs",
+#                                    "Food Security",
+#                                    "Frustrated",
+#                                    "Happy",
+#                                    "Hopeful",
+#                                    "Household Income",
+#                                    "Housing",
+#                                    "Single Parent",
+#                                    "Sad",
+#                                    "Stressed",
+#                                    "Tired",
+#                                    "Worried"),
+#                        selected = "Angry")
+#            )
+#     ),
+#   fluidRow(
+#     column(1),
+#     column(4,div(style = "height = 400"),
+#            mainPanel(
+#              plotOutput("map")
+#            )
+#     ),
+#     column(7, align = "left",
+#            mainPanel(
+#              gt_output(outputId = "table")))
+#   
+#     ),fluidRow(
+#       column(1),
+#       column(4),
+#       column(7,
+#              h4("Select a question to display."),
+#              selectInput("question",
+#                          label = "",
+#                          choices = c("Which services did you access?",
+#                                      "Which organization(s) provided services?",
+#                                      "Which services did you need but could not access?"))),
+#     ),
+#   fluidRow(
+#     column(1),
+#     column(4,
+#            mainPanel(
+#              img(src = "map.png")
+#            )
+#     ),
+#     column(7, align = "left",
+#            mainPanel(
+#              plotOutput("bars")))
+#     
+#   )
+#   )
+#   
+  
+
 ui <- fluidPage(
   theme = bslib::bs_theme(bootswatch = "lumen"),
   titlePanel("Greater Valdosta United Way Needs Assessment Results"),
   fluidRow(
-    column(4,
+    column(12,div(style = "height:50px")
+    )
+  ),
+  fluidRow(
+    column(1),
+    column(5,
            h4("Select a county to display."),
            selectInput("county",
                        label = "",
@@ -23,7 +116,29 @@ ui <- fluidPage(
                                    "Lanier",
                                    "Lowndes",
                                    "Ware"))),
-    column(8,
+    column(6
+    )
+  ),
+  fluidRow(
+    column(1),
+    column(5,div(style = "height = 400"),
+           mainPanel(
+             plotOutput("map")
+           )
+    ),
+    column(1),
+    column(4, 
+           mainPanel(
+             img(src = "map.png")
+           )),
+    column(1)
+    
+  ),  fluidRow(
+    column(12,div(style = "height:50px"))
+    
+  ),fluidRow(
+    column(1),
+    column(5,
            h4("Choose a variable to display."),
            selectInput("var",
                        label = "",
@@ -41,24 +156,29 @@ ui <- fluidPage(
                                    "Stressed",
                                    "Tired",
                                    "Worried"),
-                       selected = "Angry")
-           )
-    ),
+                       selected = "Angry")),
+    column(6,
+           h4("Select a question to display."),
+           selectInput("question",
+                       label = "",
+                       choices = c("Which services did you access?",
+                                   "Which organization(s) provided services?",
+                                   "Which services did you need but could not access?"))),
+  ),
   fluidRow(
-    column(4,
+    column(1),
+    column(5, align = "left",
            mainPanel(
-             plotOutput("map")
-           )
-    ),
-    column(8,
+             gt_output(outputId = "table"))
+           ),
+    column(6, align = "left",
            mainPanel(
-             gt_output(outputId = "table")))
-  
+             plotOutput("bars")
+           ))
     )
+    
   )
-  
-  
-  
+
   
   
 
@@ -109,548 +229,560 @@ server <- function(input, output) {
     
     if (input$var == "Single Parent" &
         input$county == "All counties"){
-      output$table <- render_gt(single_parent)
+      output$table <- render_gt(single_parent, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "All Counties"){
-      output$table <- render_gt(household_income)
+      output$table <- render_gt(household_income, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "All Counties"){
-      output$table <- render_gt(single_parent)
+      output$table <- render_gt(single_parent, align = "left")
     } else if (input$var == "Housing" &
                input$county == "All Counties"){
-      output$table <- render_gt(housing)
+      output$table <- render_gt(housing, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "All Counties"){
       output$table <- render_gt(food)
     } else if (input$var == "Internet Access" &
                input$county == "All Counties"){
-      output$table <- render_gt(internet_access)
+      output$table <- render_gt(internet_access, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "All Counties"){
-      output$table <- render_gt(child_care)
+      output$table <- render_gt(child_care, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "All Counties"){
-      output$table <- render_gt(child_care_needs)
+      output$table <- render_gt(child_care_needs, align = "left")
     } else if (input$var == "Happy" &
                input$county == "All Counties"){
-      output$table <- render_gt(happy)
+      output$table <- render_gt(happy, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "All Counties"){
-      output$table <- render_gt(stressed)
+      output$table <- render_gt(stressed, align = "left")
     } else if (input$var == "Sad" &
                input$county == "All Counties"){
-      output$table <- render_gt(sad)
+      output$table <- render_gt(sad, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "All Counties"){
-      output$table <- render_gt(frustrated)
+      output$table <- render_gt(frustrated, align = "left")
     } else if (input$var == "Tired" &
                input$county == "All Counties"){
-      output$table <- render_gt(tired)
+      output$table <- render_gt(tired, align = "left")
     } else if (input$var == "Worried" &
                input$county == "All Counties"){
-      output$table <- render_gt(worried)
+      output$table <- render_gt(worried, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "All Counties"){
-      output$table <- render_gt(hopeful)
+      output$table <- render_gt(hopeful, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Atkinson"){
-      output$table <- render_gt(household_income_atkinson)
+      output$table <- render_gt(household_income_atkinson, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Atkinson"){
-      output$table <- render_gt(single_parent_atkinson)
+      output$table <- render_gt(single_parent_atkinson, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Atkinson"){
-      output$table <- render_gt(housing_atkinson)
+      output$table <- render_gt(housing_atkinson, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Atkinson"){
-      output$table <- render_gt(food_atkinson)
+      output$table <- render_gt(food_atkinson, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Atkinson"){
-      output$table <- render_gt(internet_access_atkinson)
+      output$table <- render_gt(internet_access_atkinson, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Atkinson"){
-      output$table <- render_gt(child_care_atkinson)
+      output$table <- render_gt(child_care_atkinson, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Atkinson"){
-      output$table <- render_gt(child_care_needs_atkinson)
+      output$table <- render_gt(child_care_needs_atkinson, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Atkinson"){
-      output$table <- render_gt(happy_atkinson)
+      output$table <- render_gt(happy_atkinson, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Atkinson"){
-      output$table <- render_gt(stressed_atkinson)
+      output$table <- render_gt(stressed_atkinson, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Atkinson"){
-      output$table <- render_gt(sad_atkinson)
+      output$table <- render_gt(sad_atkinson, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Atkinson"){
-      output$table <- render_gt(angry_atkinson)
+      output$table <- render_gt(angry_atkinson, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Atkinson"){
-      output$table <- render_gt(frustrated_atkinson)
+      output$table <- render_gt(frustrated_atkinson, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Atkinson"){
-      output$table <- render_gt(tired_atkinson)
+      output$table <- render_gt(tired_atkinson, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Atkinson"){
-      output$table <- render_gt(worried_atkinson)
+      output$table <- render_gt(worried_atkinson, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Atkinson"){
-      output$table <- render_gt(hopeful_atkinson)
+      output$table <- render_gt(hopeful_atkinson, align = "left")
     } else if (input$var == "Household Income" &
                 input$county == "Bacon"){
-      output$table <- render_gt(household_income_bacon)
+      output$table <- render_gt(household_income_bacon, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Bacon"){
-      output$table <- render_gt(single_parent_bacon)
+      output$table <- render_gt(single_parent_bacon, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Bacon"){
-      output$table <- render_gt(housing_bacon)
+      output$table <- render_gt(housing_bacon, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Bacon"){
-      output$table <- render_gt(food_bacon)
+      output$table <- render_gt(food_bacon, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Bacon"){
-      output$table <- render_gt(internet_access_bacon)
+      output$table <- render_gt(internet_access_bacon, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Bacon"){
-      output$table <- render_gt(child_care_bacon)
+      output$table <- render_gt(child_care_bacon, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Bacon"){
-      output$table <- render_gt(child_care_needs_bacon)
+      output$table <- render_gt(child_care_needs_bacon, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Bacon"){
-      output$table <- render_gt(happy_bacon)
+      output$table <- render_gt(happy_bacon, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Bacon"){
-      output$table <- render_gt(stressed_bacon)
+      output$table <- render_gt(stressed_bacon, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Bacon"){
-      output$table <- render_gt(sad_bacon)
+      output$table <- render_gt(sad_bacon, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Bacon"){
-      output$table <- render_gt(angry_bacon)
+      output$table <- render_gt(angry_bacon, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Bacon"){
-      output$table <- render_gt(frustrated_bacon)
+      output$table <- render_gt(frustrated_bacon, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Bacon"){
-      output$table <- render_gt(tired_bacon)
+      output$table <- render_gt(tired_bacon, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Bacon"){
-      output$table <- render_gt(worried_bacon)
+      output$table <- render_gt(worried_bacon, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Bacon"){
-      output$table <- render_gt(hopeful_bacon)
+      output$table <- render_gt(hopeful_bacon, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Berrien"){
-      output$table <- render_gt(household_income_berrien)
+      output$table <- render_gt(household_income_berrien, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Berrien"){
-      output$table <- render_gt(single_parent_berrien)
+      output$table <- render_gt(single_parent_berrien, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Berrien"){
-      output$table <- render_gt(housing_berrien)
+      output$table <- render_gt(housing_berrien, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Berrien"){
-      output$table <- render_gt(food_berrien)
+      output$table <- render_gt(food_berrien, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Berrien"){
-      output$table <- render_gt(internet_access_berrien)
+      output$table <- render_gt(internet_access_berrien, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Berrien"){
-      output$table <- render_gt(child_care_berrien)
+      output$table <- render_gt(child_care_berrien, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Berrien"){
-      output$table <- render_gt(child_care_needs_berrien)
+      output$table <- render_gt(child_care_needs_berrien, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Berrien"){
-      output$table <- render_gt(happy_berrien)
+      output$table <- render_gt(happy_berrien, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Berrien"){
-      output$table <- render_gt(stressed_berrien)
+      output$table <- render_gt(stressed_berrien, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Berrien"){
-      output$table <- render_gt(sad_berrien)
+      output$table <- render_gt(sad_berrien, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Berrien"){
-      output$table <- render_gt(angry_berrien)
+      output$table <- render_gt(angry_berrien, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Berrien"){
-      output$table <- render_gt(frustrated_berrien)
+      output$table <- render_gt(frustrated_berrien, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Berrien"){
-      output$table <- render_gt(tired_berrien)
+      output$table <- render_gt(tired_berrien, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Berrien"){
-      output$table <- render_gt(worried_berrien)
+      output$table <- render_gt(worried_berrien, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Berrien"){
-      output$table <- render_gt(hopeful_berrien)
+      output$table <- render_gt(hopeful_berrien, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Brooks"){
-      output$table <- render_gt(household_income_brooks)
+      output$table <- render_gt(household_income_brooks, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Brooks"){
-      output$table <- render_gt(single_parent_brooks)
+      output$table <- render_gt(single_parent_brooks, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Brooks"){
-      output$table <- render_gt(housing_brooks)
+      output$table <- render_gt(housing_brooks, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Brooks"){
-      output$table <- render_gt(food_brooks)
+      output$table <- render_gt(food_brooks, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Brooks"){
-      output$table <- render_gt(internet_access_brooks)
+      output$table <- render_gt(internet_access_brooks, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Brooks"){
-      output$table <- render_gt(child_care_brooks)
+      output$table <- render_gt(child_care_brooks, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Brooks"){
-      output$table <- render_gt(child_care_needs_brooks)
+      output$table <- render_gt(child_care_needs_brooks, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Brooks"){
-      output$table <- render_gt(happy_brooks)
+      output$table <- render_gt(happy_brooks, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Brooks"){
-      output$table <- render_gt(stressed_brooks)
+      output$table <- render_gt(stressed_brooks, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Brooks"){
-      output$table <- render_gt(sad_brooks)
+      output$table <- render_gt(sad_brooks, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Brooks"){
-      output$table <- render_gt(angry_brooks)
+      output$table <- render_gt(angry_brooks, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Brooks"){
-      output$table <- render_gt(frustrated_brooks)
+      output$table <- render_gt(frustrated_brooks, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Brooks"){
-      output$table <- render_gt(tired_brooks)
+      output$table <- render_gt(tired_brooks, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Brooks"){
-      output$table <- render_gt(worried_brooks)
+      output$table <- render_gt(worried_brooks, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Brooks"){
-      output$table <- render_gt(hopeful_brooks)
+      output$table <- render_gt(hopeful_brooks, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Clinch"){
-      output$table <- render_gt(household_income_clinch)
+      output$table <- render_gt(household_income_clinch, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Clinch"){
-      output$table <- render_gt(single_parent_clinch)
+      output$table <- render_gt(single_parent_clinch, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Clinch"){
-      output$table <- render_gt(housing_clinch)
+      output$table <- render_gt(housing_clinch, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Clinch"){
-      output$table <- render_gt(food_clinch)
+      output$table <- render_gt(food_clinch, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Clinch"){
-      output$table <- render_gt(internet_access_clinch)
+      output$table <- render_gt(internet_access_clinch, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Clinch"){
-      output$table <- render_gt(child_care_clinch)
+      output$table <- render_gt(child_care_clinch, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Clinch"){
-      output$table <- render_gt(child_care_needs_clinch)
+      output$table <- render_gt(child_care_needs_clinch, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Clinch"){
-      output$table <- render_gt(happy_clinch)
+      output$table <- render_gt(happy_clinch, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Clinch"){
-      output$table <- render_gt(stressed_clinch)
+      output$table <- render_gt(stressed_clinch, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Clinch"){
-      output$table <- render_gt(sad_clinch)
+      output$table <- render_gt(sad_clinch, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Clinch"){
-      output$table <- render_gt(angry_clinch)
+      output$table <- render_gt(angry_clinch, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Clinch"){
-      output$table <- render_gt(frustrated_clinch)
+      output$table <- render_gt(frustrated_clinch, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Clinch"){
-      output$table <- render_gt(tired_clinch)
+      output$table <- render_gt(tired_clinch, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Clinch"){
-      output$table <- render_gt(worried_clinch)
+      output$table <- render_gt(worried_clinch, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Clinch"){
-      output$table <- render_gt(hopeful_clinch)
+      output$table <- render_gt(hopeful_clinch, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Coffee"){
-      output$table <- render_gt(household_income_coffee)
+      output$table <- render_gt(household_income_coffee, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Coffee"){
-      output$table <- render_gt(single_parent_coffee)
+      output$table <- render_gt(single_parent_coffee, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Coffee"){
-      output$table <- render_gt(housing_coffee)
+      output$table <- render_gt(housing_coffee, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Coffee"){
-      output$table <- render_gt(food_coffee)
+      output$table <- render_gt(food_coffee, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Coffee"){
-      output$table <- render_gt(internet_access_coffee)
+      output$table <- render_gt(internet_access_coffee, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Coffee"){
-      output$table <- render_gt(child_care_coffee)
+      output$table <- render_gt(child_care_coffee, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Coffee"){
-      output$table <- render_gt(child_care_needs_coffee)
+      output$table <- render_gt(child_care_needs_coffee, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Coffee"){
-      output$table <- render_gt(happy_coffee)
+      output$table <- render_gt(happy_coffee, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Coffee"){
-      output$table <- render_gt(stressed_coffee)
+      output$table <- render_gt(stressed_coffee, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Coffee"){
-      output$table <- render_gt(sad_coffee)
+      output$table <- render_gt(sad_coffee, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Coffee"){
-      output$table <- render_gt(angry_coffee)
+      output$table <- render_gt(angry_coffee, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Coffee"){
-      output$table <- render_gt(frustrated_coffee)
+      output$table <- render_gt(frustrated_coffee, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Coffee"){
-      output$table <- render_gt(tired_coffee)
+      output$table <- render_gt(tired_coffee, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Coffee"){
-      output$table <- render_gt(worried_coffee)
+      output$table <- render_gt(worried_coffee, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Coffee"){
-      output$table <- render_gt(hopeful_coffee)
+      output$table <- render_gt(hopeful_coffee, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Echols"){
-      output$table <- render_gt(household_income_echols)
+      output$table <- render_gt(household_income_echols, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Echols"){
-      output$table <- render_gt(single_parent_echols)
+      output$table <- render_gt(single_parent_echols, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Echols"){
-      output$table <- render_gt(housing_echols)
+      output$table <- render_gt(housing_echols, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Echols"){
-      output$table <- render_gt(food_echols)
+      output$table <- render_gt(food_echols, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Echols"){
-      output$table <- render_gt(internet_access_echols)
+      output$table <- render_gt(internet_access_echols, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Echols"){
-      output$table <- render_gt(child_care_echols)
+      output$table <- render_gt(child_care_echols, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Echols"){
-      output$table <- render_gt(child_care_needs_echols)
+      output$table <- render_gt(child_care_needs_echols, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Echols"){
-      output$table <- render_gt(happy_echols)
+      output$table <- render_gt(happy_echols, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Echols"){
-      output$table <- render_gt(stressed_echols)
+      output$table <- render_gt(stressed_echols, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Echols"){
-      output$table <- render_gt(sad_echols)
+      output$table <- render_gt(sad_echols, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Echols"){
-      output$table <- render_gt(angry_echols)
+      output$table <- render_gt(angry_echols, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Echols"){
-      output$table <- render_gt(frustrated_echols)
+      output$table <- render_gt(frustrated_echols, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Echols"){
-      output$table <- render_gt(tired_echols)
+      output$table <- render_gt(tired_echols, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Echols"){
-      output$table <- render_gt(worried_echols)
+      output$table <- render_gt(worried_echols, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Echols"){
-      output$table <- render_gt(hopeful_echols)
+      output$table <- render_gt(hopeful_echols, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(household_income_jeffdavis)
+      output$table <- render_gt(household_income_jeffdavis, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(single_parent_jeffdavis)
+      output$table <- render_gt(single_parent_jeffdavis, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(housing_jeffdavis)
+      output$table <- render_gt(housing_jeffdavis, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(food_jeffdavis)
+      output$table <- render_gt(food_jeffdavis, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(internet_access_jeffdavis)
+      output$table <- render_gt(internet_access_jeffdavis, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(child_care_jeffdavis)
+      output$table <- render_gt(child_care_jeffdavis, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Jeff Davis"){
-      output$table <- render_gt(child_care_needs_jeffdavis)
+      output$table <- render_gt(child_care_needs_jeffdavis, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(happy_jeffdavis)
+      output$table <- render_gt(happy_jeffdavis, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(stressed_jeffdavis)
+      output$table <- render_gt(stressed_jeffdavis, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(sad_jeffdavis)
+      output$table <- render_gt(sad_jeffdavis, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(angry_jeffdavis)
+      output$table <- render_gt(angry_jeffdavis, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Jeff Davis"){
-      output$table <- render_gt(frustrated_jeffdavis)
+      output$table <- render_gt(frustrated_jeffdavis, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(tired_jeffdavis)
+      output$table <- render_gt(tired_jeffdavis, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(worried_jeffdavis)
+      output$table <- render_gt(worried_jeffdavis, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Jeff Davis"){
-      output$table <- render_gt(hopeful_jeffdavis)
+      output$table <- render_gt(hopeful_jeffdavis, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Lanier"){
-      output$table <- render_gt(household_income_lanier)
+      output$table <- render_gt(household_income_lanier, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Lanier"){
-      output$table <- render_gt(single_parent_lanier)
+      output$table <- render_gt(single_parent_lanier, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Lanier"){
-      output$table <- render_gt(housing_lanier)
+      output$table <- render_gt(housing_lanier, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Lanier"){
-      output$table <- render_gt(food_lanier)
+      output$table <- render_gt(food_lanier, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Lanier"){
-      output$table <- render_gt(internet_access_lanier)
+      output$table <- render_gt(internet_access_lanier, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Lanier"){
-      output$table <- render_gt(child_care_lanier)
+      output$table <- render_gt(child_care_lanier, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Lanier"){
-      output$table <- render_gt(child_care_needs_lanier)
+      output$table <- render_gt(child_care_needs_lanier, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Lanier"){
-      output$table <- render_gt(happy_lanier)
+      output$table <- render_gt(happy_lanier, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Lanier"){
-      output$table <- render_gt(stressed_lanier)
+      output$table <- render_gt(stressed_lanier, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Lanier"){
-      output$table <- render_gt(sad_lanier)
+      output$table <- render_gt(sad_lanier, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Lanier"){
-      output$table <- render_gt(angry_lanier)
+      output$table <- render_gt(angry_lanier, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Lanier"){
-      output$table <- render_gt(frustrated_lanier)
+      output$table <- render_gt(frustrated_lanier, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Lanier"){
-      output$table <- render_gt(tired_lanier)
+      output$table <- render_gt(tired_lanier, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Lanier"){
-      output$table <- render_gt(worried_lanier)
+      output$table <- render_gt(worried_lanier, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Lanier"){
-      output$table <- render_gt(hopeful_lanier)
+      output$table <- render_gt(hopeful_lanier, align = "left")
     } else if (input$var == "Household Income" &
                input$county == "Lowndes"){
-      output$table <- render_gt(household_income_lowndes)
+      output$table <- render_gt(household_income_lowndes, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Lowndes"){
-      output$table <- render_gt(single_parent_lowndes)
+      output$table <- render_gt(single_parent_lowndes, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Lowndes"){
-      output$table <- render_gt(housing_lowndes)
+      output$table <- render_gt(housing_lowndes, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Lowndes"){
-      output$table <- render_gt(food_lowndes)
+      output$table <- render_gt(food_lowndes, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Lowndes"){
-      output$table <- render_gt(internet_access_lowndes)
+      output$table <- render_gt(internet_access_lowndes, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Lowndes"){
-      output$table <- render_gt(child_care_lowndes)
+      output$table <- render_gt(child_care_lowndes, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Lowndes"){
-      output$table <- render_gt(child_care_needs_lowndes)
+      output$table <- render_gt(child_care_needs_lowndes, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Lowndes"){
-      output$table <- render_gt(happy_lowndes)
+      output$table <- render_gt(happy_lowndes, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Lowndes"){
-      output$table <- render_gt(stressed_lowndes)
+      output$table <- render_gt(stressed_lowndes, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Lowndes"){
-      output$table <- render_gt(sad_lowndes)
+      output$table <- render_gt(sad_lowndes, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Lowndes"){
-      output$table <- render_gt(angry_lowndes)
+      output$table <- render_gt(angry_lowndes, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Lowndes"){
-      output$table <- render_gt(frustrated_lowndes)
+      output$table <- render_gt(frustrated_lowndes, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Lowndes"){
-      output$table <- render_gt(tired_lowndes)
+      output$table <- render_gt(tired_lowndes, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Lowndes"){
-      output$table <- render_gt(worried_lowndes)
+      output$table <- render_gt(worried_lowndes, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Lowndes"){
-      output$table <- render_gt(hopeful_lowndes)
+      output$table <- render_gt(hopeful_lowndes, align = "left")
     } else if (input$var == "Household Income" &
                  input$county == "Ware"){
-      output$table <- render_gt(household_income_ware)
+      output$table <- render_gt(household_income_ware, align = "left")
     } else if (input$var == "Single Parent" &
                input$county == "Ware"){
-      output$table <- render_gt(single_parent_ware)
+      output$table <- render_gt(single_parent_ware, align = "left")
     } else if (input$var == "Housing" &
                input$county == "Ware"){
-      output$table <- render_gt(housing_ware)
+      output$table <- render_gt(housing_ware, align = "left")
     } else if (input$var == "Food Security" &
                input$county == "Ware"){
-      output$table <- render_gt(food_ware)
+      output$table <- render_gt(food_ware, align = "left")
     } else if (input$var == "Internet Access" &
                input$county == "Ware"){
-      output$table <- render_gt(internet_access_ware)
+      output$table <- render_gt(internet_access_ware, align = "left")
     } else if (input$var == "Child Care" &
                input$county == "Ware"){
-      output$table <- render_gt(child_care_ware)
+      output$table <- render_gt(child_care_ware, align = "left")
     } else if (input$var == "Child Care Needs" &
               input$county == "Ware"){
-      output$table <- render_gt(child_care_needs_ware)
+      output$table <- render_gt(child_care_needs_ware, align = "left")
     } else if (input$var == "Happy" &
                input$county == "Ware"){
-      output$table <- render_gt(happy_ware)
+      output$table <- render_gt(happy_ware, align = "left")
     } else if (input$var == "Stressed" &
                input$county == "Ware"){
-      output$table <- render_gt(stressed_ware)
+      output$table <- render_gt(stressed_ware, align = "left")
     } else if (input$var == "Sad" &
                input$county == "Ware"){
-      output$table <- render_gt(sad_ware)
+      output$table <- render_gt(sad_ware, align = "left")
     } else if (input$var == "Angry" &
                input$county == "Ware"){
-      output$table <- render_gt(angry_ware)
+      output$table <- render_gt(angry_ware, align = "left")
     } else if (input$var == "Frustrated" &
               input$county == "Ware"){
-      output$table <- render_gt(frustrated_ware)
+      output$table <- render_gt(frustrated_ware, align = "left")
     } else if (input$var == "Tired" &
                input$county == "Ware"){
-      output$table <- render_gt(tired_ware)
+      output$table <- render_gt(tired_ware, align = "left")
     } else if (input$var == "Worried" &
                input$county == "Ware"){
-      output$table <- render_gt(worried_ware)
+      output$table <- render_gt(worried_ware, align = "left")
     } else if (input$var == "Hopeful" &
                input$county == "Ware"){
-      output$table <- render_gt(hopeful_ware)
+      output$table <- render_gt(hopeful_ware, align = "left")
     } else {
-      output$table <- render_gt(angry)
+      output$table <- render_gt(angry, align = "left")
       }
   )
+  
+  observe(
+    if (input$county == "All Counties"){
+      output$bars <- renderPlot({services_bars})
+    } else if (input$county == "All Counties"){
+      output$bars <- renderPlot({org_bars})
+    } else {
+      output$bars <- renderPlot({rna_bars})
+    }
+  )
+  
+  
 }
   
 

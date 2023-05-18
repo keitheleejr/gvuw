@@ -771,7 +771,7 @@ child_care_needs <- as.data.frame(table(data$child_care_needs)) |>
 
 ###### services #####
 
-services_plot <- as_tibble(unlist(strsplit(data$services,","))) |> 
+services_bars <- as_tibble(unlist(strsplit(data$services,","))) |> 
   filter(!is.na(value),
          value != "Other (please specify)") |> # learn how to remove the space here
   group_by(value) |> 
@@ -790,7 +790,7 @@ services_plot <- as_tibble(unlist(strsplit(data$services,","))) |>
 
 ###### organizations #####
 
-org <- as_tibble(unlist(strsplit(data$organizations,","))) |> 
+org_bars <- as_tibble(unlist(strsplit(data$organizations,","))) |> 
   filter(!is.na(value),
          value != "Other (please specify)") |> # learn how to remove the space here
   group_by(value) |> 
@@ -809,7 +809,7 @@ org <- as_tibble(unlist(strsplit(data$organizations,","))) |>
 ###### resources_non_access #####
 
 
-rna <- as_tibble(unlist(strsplit(data$resources_non_access,","))) |> 
+rna_bars <- as_tibble(unlist(strsplit(data$resources_non_access,","))) |> 
   filter(!is.na(value),
          value != "None",
          value != "Other (please specify)",

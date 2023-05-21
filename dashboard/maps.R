@@ -21,27 +21,17 @@ map_data <- data |>
   group_by(county) |> 
   count()
 
+counties <- c("atkinson", "bacon", "berrien", "brooks",
+              "clinch", "coffee", "echols", "jeff davis",
+              "lanier", "lowndes", "ware")
+
 geo_counties <- map_data("county") |> 
   rename(county = subregion) |>  
   filter(region == "georgia",
-         county %in% c("atkinson",
-                       "bacon",
-                       "berrien",
-                       "brooks",
-                       "clinch",
-                       "coffee",
-                       "echols",
-                       "jeff davis",
-                       "lanier",
-                       "lowndes",
-                       "ware")) 
-
-
+         county %in% counties) 
 
 map_data <- inner_join(geo_counties, map_data,
                        by = "county")
-
-
 
 all_county_map <- ggplot(map_data, aes(x = long, 
                                        y = lat, 
@@ -70,28 +60,12 @@ countymap <- function(countyname){
     coord_map() +
     theme_void() +
     scale_fill_identity()
+  assign(paste(countyname,"_map", sep = ""),map,1)
 }
 
 ##### County Maps #####
 
-atkinson_map <- countymap("atkinson")
+for (i in 1:length(counties)){
+  countymap(counties[i])
+}
 
-bacon_map <- countymap("bacon")
-
-berrien_map <- countymap("berrien")
-
-brooks_map <- countymap("brooks")
-
-clinch_map <- countymap("clinch")
-
-coffee_map <- countymap("coffee")
-
-echols_map <- countymap("echols")
-
-jeffdavis_map <- countymap("jeff davis")
-
-lanier_map <- countymap("lanier")
-
-lowndes_map <- countymap("lowndes")
-
-ware_map <- countymap("ware")
